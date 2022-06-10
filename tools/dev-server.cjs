@@ -30,16 +30,26 @@ const esbuildOptions = {
 };
 
 esbuild.serve(esbuildServerOptions, esbuildOptions).then(() => {
-  const { host, port } = esbuildServerOptions;
+  const { port } = esbuildServerOptions;
 
-  console.log(`Local: http://${host}:${port}/`);
+  console.log(`Local: http://localhost:${port}/`);
 
   new tinylr.Server().listen(tinylrOptions.port, () => {
     const { host, port } = tinylrOptions;
 
-    console.log(`Live Reload: http://${host}:${port}/`);
+    console.log(`Live Reload: http://localhost:${port}/`);
 
-    chokidar.watch("src/**/*").on("all", (_event, path) => {
+    chokidar.watch("src/**/*").on("all", (event, path) => {
+      const verbs = {
+        add: "Added",
+        addDir: "Added",
+        change: "Changed",
+        unlink: "Removed",
+        unlinkDir: "Removed",
+      };
+
+      console.log(`${verbs[event]} "${path}", reloading...`);
+
       fetch(`http://${host}:${port}/changed`, {
         method: "POST",
         headers: new Headers({ "Content-Type": "application/json" }),
