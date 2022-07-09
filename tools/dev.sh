@@ -12,9 +12,9 @@ fi
 if podman ps --format "{{.Names}}" | grep -q $CONTAINER_NAME; then
   podman exec -it $CONTAINER_NAME /bin/sh
 else
- podman run -it --rm \
-  --name $CONTAINER_NAME \
-  -p "127.0.0.1:3000:3000/tcp" \
-  -v "$APP_PATH:/root/app/" \
-  $IMAGE_NAME
+  podman run -it --rm \
+    --name $CONTAINER_NAME \
+    -p "127.0.0.1:3000:3000/tcp" \
+    -v "$APP_PATH:/root/app/" \
+    $IMAGE_NAME
 fi
