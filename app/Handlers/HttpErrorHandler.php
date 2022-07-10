@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Handlers;
 
 use Psr\Http\Message\ResponseInterface;
 use Slim\Exception\HttpBadRequestException;
@@ -13,7 +13,7 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpNotImplementedException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler;
-use Slim\Http\Factory\DecoratedResponseFactory;
+use Slim\Http\Response;
 
 use Exception;
 use Throwable;
@@ -27,9 +27,6 @@ class HttpErrorHandler extends ErrorHandler
     public const RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
     public const SERVER_ERROR = 'SERVER_ERROR';
     public const UNAUTHENTICATED = 'UNAUTHENTICATED';
-
-    /** @var ResponseFactory $responseFactory */
-    protected $responseFactory;
 
     protected function logError(string $error): void
     {
@@ -83,6 +80,7 @@ class HttpErrorHandler extends ErrorHandler
             ],
         ];
 
+        /** @var Response $response */
         $response = $this->responseFactory->createResponse($statusCode);
 
         return $response->withJson($error, null, JSON_PRETTY_PRINT);

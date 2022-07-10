@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-use App\Handler\HttpErrorHandler;
-use App\Handler\ShutdownHandler;
+use App\Handlers\HttpErrorHandler;
+use App\Handlers\ShutdownHandler;
+use App\ResponseEmitter;
 use App\Settings;
 use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
-use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Log\LoggerInterface;
 use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Http\Factory\DecoratedResponseFactory;
 
 // TODO: Use an environment variable or something for this path.
 const __BASE__ = __DIR__ . '/../..';
@@ -57,10 +56,10 @@ $middleware($app);
 $routes = require __BASE__ . '/bootstrap/routes.php';
 $routes($app);
 
-/** @var Settings $settings */
+/** @var Settings */
 $settings = $container->get(Settings::class);
 
-/** @var LoggerInterface $logger */
+/** @var LoggerInterface */
 $logger = $container->get(LoggerInterface::class);
 
 $displayErrorDetails = $settings->get('displayErrorDetails');
@@ -72,12 +71,16 @@ $serverRequestCreator = ServerRequestCreatorFactory::create();
 $request = $serverRequestCreator->createServerRequestFromGlobals();
 
 // Create Error Handler
-$responseFactory = new Psr17Factory();
-$decoratedResponseFactory = new DecoratedResponseFactory($responseFactory, $responseFactory);
-$errorHandler = new HttpErrorHandler($callableResolver, $decoratedResponseFactory, $logger);
+$responseFactory = $app->getResponseFactory();
+$errorHandler = new HttpErrorHandler($callableResolver, $responseFactory, $logger);
 
 // Create Shutdown Handler
-$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails, $logger);
+$shutdownHandler = new ShutdownHandler(
+    $request,
+    $errorHandler,
+    $displayErrorDetails,
+    $logger,
+);
 register_shutdown_function($shutdownHandler);
 
 // Add Routing Middleware
@@ -90,4 +93,7 @@ $app->addBodyParsingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails, $logger);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
-$app->run();
+// Run App & Emit Response
+$response = $app->handle($request);
+$responseEmitter = new ResponseEmitter();
+$responseEmitter->emit($response);

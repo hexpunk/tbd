@@ -7,14 +7,11 @@ use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        LoggerInterface::class => function (ContainerInterface $c) {
-            $settings = $c->get(Settings::class);
-
+        LoggerInterface::class => function (Settings $settings) {
             $loggerSettings = $settings->get('logger');
             $logger = new Logger($loggerSettings['name']);
 

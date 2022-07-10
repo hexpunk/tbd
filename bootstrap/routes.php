@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use Slim\Http\Response as Response;
-use Slim\Http\ServerRequest as Request;
 use Slim\App;
+use Slim\Exception\HttpForbiddenException;
+use Slim\Http\Response;
+use Slim\Http\ServerRequest as Request;
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -13,6 +14,7 @@ return function (App $app) {
     });
 
     $app->get('/', function (Request $request, Response $response) {
+        // throw new HttpForbiddenException($request);
         return $response->withJson(['hello' => 'world']);
     });
 };

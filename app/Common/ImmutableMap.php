@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Common;
 
-use App\Exception\NotImplementedException;
 use App\Common\Map;
+use App\Exceptions\NotImplementedException;
 
 class ImmutableMap extends Map
 {

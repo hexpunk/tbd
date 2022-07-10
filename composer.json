@@ -16,7 +16,7 @@
     "psr/container": "1.1.2",
     "slim/http": "1.2.0",
     "slim/slim": "4.9.0",
-    "vlucas/phpdotenv": "5.4.1"
+    "symfony/dotenv": "6.0.5"
   },
   "require-dev": {
     "psy/psysh": "0.11.7"

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Handlers;
 
-use App\Handler\HttpErrorHandler;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Handlers\HttpErrorHandler;
+use App\ResponseEmitter;
+use Psr\Http\Message\RequestInterface as Request;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Logger;
-use Slim\ResponseEmitter;
 
 class ShutdownHandler
 {
@@ -33,16 +33,27 @@ class ShutdownHandler
             $message = 'An error while processing your request. Please try again later.';
 
             switch ($errorType) {
-                case E_WARNING:
+                case E_COMPILE_WARNING:
+                case E_CORE_WARNING:
                 case E_USER_WARNING:
+                case E_WARNING:
                     $this->logger->warning($errorMessage);
                     break;
 
+                case E_DEPRECATED:
                 case E_NOTICE:
+                case E_STRICT:
+                case E_USER_DEPRECATED:
                 case E_USER_NOTICE:
                     $this->logger->notice($errorMessage);
                     break;
 
+                case E_COMPILE_ERROR:
+                case E_CORE_ERROR:
+                case E_ERROR:
+                case E_PARSE:
+                case E_RECOVERABLE_ERROR:
+                case E_USER_ERROR:
                 default:
                     $details = "{$errorMessage} on line {$errorLine} in file {$errorFile}";
                     $this->logger->error($details);
@@ -53,10 +64,6 @@ class ShutdownHandler
 
                     $exception = new HttpInternalServerErrorException($this->request, $message);
                     $response = $this->errorHandler->__invoke($this->request, $exception, $this->displayErrorDetails, false, false);
-
-                    if (ob_get_length()) {
-                        ob_clean();
-                    }
 
                     $responseEmitter = new ResponseEmitter();
                     $responseEmitter->emit($response);

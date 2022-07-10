@@ -19,6 +19,10 @@ class Map implements ArrayAccess
 
     public function offsetExists(mixed $offset): bool
     {
+        if ($offset === null) {
+            return false;
+        }
+        echo $offset;
         return isset($this->container[$offset]);
     }
 
