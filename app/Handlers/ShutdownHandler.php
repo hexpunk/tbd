@@ -17,7 +17,7 @@ class ShutdownHandler
         private Request $request,
         private HttpErrorHandler $errorHandler,
         private bool $displayErrorDetails,
-        LoggerInterface | null $logger = null,
+        ?LoggerInterface $logger = null,
     ) {
         $this->logger = $logger ?: new Logger();
     }
