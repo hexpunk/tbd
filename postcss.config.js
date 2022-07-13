@@ -1,3 +1,5 @@
+const tailwindConfig = require("./tailwind.config");
+
 /** @type {import('postcss').Config} */
 module.exports = {
   plugins: {
@@ -6,7 +8,7 @@ module.exports = {
     ...(process.env.NODE_ENV === "production"
       ? {
           "@fullhuman/postcss-purgecss": {
-            content: ["./index.html", "./src/**/*.{ts,tsx}"],
+            content: tailwindConfig.content,
             defaultExtractor: (content) =>
               content.match(/[\w-/:.]+(?<!:)/g) || [],
           },
