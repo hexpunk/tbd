@@ -15,6 +15,7 @@ else
   podman run -it --rm \
     --name $CONTAINER_NAME \
     -p "127.0.0.1:3000:3000/tcp" \
+    -p "127.0.0.1:5173:5173/tcp" \
     -v "$APP_PATH:/root/app/" \
     $IMAGE_NAME
 fi
