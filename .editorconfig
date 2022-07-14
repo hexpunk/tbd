@@ -5,10 +5,10 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{sh,ts,tsx}]
+[*.{json,sh,ts,tsx}]
 indent_style = space
 indent_size = 2
 
-[*.{css,php}]
+[*.{css,php,xml}]
 indent_style = space
 indent_size = 4
