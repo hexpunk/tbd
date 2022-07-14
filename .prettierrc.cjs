@@ -5,7 +5,10 @@ module.exports = {
     {
       files: "*.json",
       options: {
-        parser: "babel",
+        parser: "json5",
+        quoteProps: "preserve",
+        singleQuote: false,
+        trailingComma: "none",
       },
     },
   ],
