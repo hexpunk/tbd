@@ -6,15 +6,17 @@ namespace App\Handlers;
 
 use App\Handlers\HttpErrorHandler;
 use App\ResponseEmitter;
-use Psr\Http\Message\RequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Logger;
 
 class ShutdownHandler
 {
+    protected LoggerInterface $logger;
+
     public function __construct(
-        private Request $request,
+        private ServerRequestInterface $request,
         private HttpErrorHandler $errorHandler,
         private bool $displayErrorDetails,
         ?LoggerInterface $logger = null,
@@ -22,7 +24,7 @@ class ShutdownHandler
         $this->logger = $logger ?: new Logger();
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $error = error_get_last();
         if ($error) {

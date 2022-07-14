@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Common\ImmutableMap;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Dotenv\Exception\FormatException;
 use Symfony\Component\Dotenv\Exception\PathException;
 
-class Env extends ImmutableMap
+class Env
 {
     private static ?Env $instance = null;
 
@@ -24,8 +23,6 @@ class Env extends ImmutableMap
         } catch (FormatException $ex) {
             trigger_error($ex->getMessage(), E_USER_ERROR);
         }
-
-        parent::__construct($_ENV);
     }
 
     public static function getInstance(): Env
@@ -35,5 +32,15 @@ class Env extends ImmutableMap
         }
 
         return self::$instance;
+    }
+
+    /**
+     * @phpstan-template T
+     * @phpstan-param T $orElse
+     * @phpstan-return T
+     */
+    public function get(string $key, mixed $orElse = null): mixed
+    {
+        return isset($_ENV[$key]) ? $_ENV[$key] : $orElse;
     }
 }

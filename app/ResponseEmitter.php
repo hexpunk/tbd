@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Env;
 use Psr\Http\Message\ResponseInterface;
 use Slim\ResponseEmitter as SlimResponseEmitter;
 

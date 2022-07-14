@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Handlers\HttpErrorHandler;
 use App\Handlers\ShutdownHandler;
 use App\ResponseEmitter;
-use App\Settings;
+use App\Settings\AppSettings;
 use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
 use Psr\Log\LoggerInterface;
@@ -20,6 +20,7 @@ require __BASE__ . '/vendor/autoload.php';
 $containerBuilder = new ContainerBuilder();
 
 // TODO: Use an environment variable or something to switch this.
+/** @phpstan-ignore-next-line */
 if (false) { // Should be set to true in production
     // TODO: Use an environment variable or something for this path.
     $containerBuilder->enableCompilation(__BASE__ . '/var/cache');
@@ -56,15 +57,15 @@ $middleware($app);
 $routes = require __BASE__ . '/bootstrap/routes.php';
 $routes($app);
 
-/** @var Settings */
-$settings = $container->get(Settings::class);
+/** @var AppSettings */
+$settings = $container->get(AppSettings::class);
 
 /** @var LoggerInterface */
 $logger = $container->get(LoggerInterface::class);
 
-$displayErrorDetails = $settings->get('displayErrorDetails');
-$logError = $settings->get('logError');
-$logErrorDetails = $settings->get('logErrorDetails');
+$displayErrorDetails = $settings->displayErrorDetails;
+$logError = $settings->logError;
+$logErrorDetails = $settings->logErrorDetails;
 
 // Create Request object from globals
 $serverRequestCreator = ServerRequestCreatorFactory::create();

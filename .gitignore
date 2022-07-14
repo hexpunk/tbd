@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,composer
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,composer
+# Created by https://www.toptal.com/developers/gitignore/api/node,composer,phpunit
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,composer,phpunit
 
 ### Composer ###
 composer.phar
@@ -149,4 +149,21 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
-# End of https://www.toptal.com/developers/gitignore/api/node,composer
+### PHPUnit ###
+# Covers PHPUnit
+# Reference: https://phpunit.de/
+
+# Generated files
+.phpunit.result.cache
+.phpunit.cache
+
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+
+# Build data
+/build/
+
+# End of https://www.toptal.com/developers/gitignore/api/node,composer,phpunit
+
+!/phpunit.xml

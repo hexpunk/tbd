@@ -15,9 +15,6 @@ use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler;
 use Slim\Http\Response;
 
-use Exception;
-use Throwable;
-
 class HttpErrorHandler extends ErrorHandler
 {
     public const BAD_REQUEST = 'BAD_REQUEST';
@@ -64,11 +61,7 @@ class HttpErrorHandler extends ErrorHandler
             }
         }
 
-        if (
-            !($exception instanceof HttpException)
-            && ($exception instanceof Exception || $exception instanceof Throwable)
-            && $this->displayErrorDetails
-        ) {
+        if (!($exception instanceof HttpException) && $this->displayErrorDetails) {
             $description = $exception->getMessage();
         }
 
