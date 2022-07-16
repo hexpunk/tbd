@@ -12,9 +12,15 @@
     }
   },
   "scripts": {
-    "start": "php -S 0.0.0.0:8080 -t public",
     "lint": "phpstan analyze",
-    "test": "phpunit"
+    "post-install-cmd": "npm clean-install",
+    "post-update-cmd": "npm install",
+    "start": "(trap 'kill 0' SIGINT; composer start:php & composer start:node)",
+    "start:node": "npm run dev",
+    "start:php": "php -S 0.0.0.0:8080 -t public",
+    "test": "composer test:php && composer test:node",
+    "test:node": "npm test",
+    "test:php": "phpunit"
   },
   "require": {
     "php": "^8.0",
@@ -29,8 +35,11 @@
     "symfony/dotenv": "6.0.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "9.5.21",
     "phpstan/phpstan": "1.8.1",
+    "phpunit/phpunit": "9.5.21",
     "psy/psysh": "0.11.7"
+  },
+  "config": {
+    "process-timeout": 0
   }
 }

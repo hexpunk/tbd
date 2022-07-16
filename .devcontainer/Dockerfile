@@ -1,9 +1,9 @@
 FROM alpine:3.16
 
 RUN apk update \
-  && apk add --no-cache git nano openssh-client \
-  && apk add --no-cache php8 php8-dom php8-fileinfo php8-simplexml php8-tokenizer php8-xml php8-xmlwriter composer \
-  && apk add --no-cache nodejs-current npm
+ && apk add --no-cache git nano openssh-client \
+ && apk add --no-cache php8 php8-dom php8-fileinfo php8-simplexml php8-tokenizer php8-xml php8-xmlwriter composer \
+ && apk add --no-cache nodejs-current npm
 
 ENV PHP_INI_DIR /etc/php8
 

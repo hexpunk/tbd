@@ -6,6 +6,7 @@ namespace Tests;
 
 use DI\ContainerBuilder;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\Uri;
 use PHPUnit\Framework\TestCase as PHPUnit_TestCase;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -13,9 +14,8 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 
 use Exception;
-use Nyholm\Psr7\ServerRequest;
 
-class TestCase extends PHPUnit_TestCase
+abstract class TestCase extends PHPUnit_TestCase
 {
     /** @throws Exception */
     protected function getAppInstance(): App
