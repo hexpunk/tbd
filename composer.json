@@ -19,7 +19,7 @@
     "start": "composer parallel -- 'composer start:php' 'composer start:node'",
     "start:node": "npm run dev",
     "start:php": "php -S 0.0.0.0:8080 -t public",
-    "test": "composer test:php && composer test:node",
+    "test": ["composer test:php", "composer test:node"],
     "test:node": "npm test",
     "test:php": "phpunit"
   },
