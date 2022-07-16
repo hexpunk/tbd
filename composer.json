@@ -13,9 +13,10 @@
   },
   "scripts": {
     "lint": "phpstan analyze",
+    "parallel": "parallel --lb --ctag --halt now,done=1 :::",
     "post-install-cmd": "npm clean-install",
     "post-update-cmd": "npm install",
-    "start": "(trap 'kill 0' SIGINT; composer start:php & composer start:node)",
+    "start": "composer parallel -- 'composer start:php' 'composer start:node'",
     "start:node": "npm run dev",
     "start:php": "php -S 0.0.0.0:8080 -t public",
     "test": "composer test:php && composer test:node",
