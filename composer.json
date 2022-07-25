@@ -25,7 +25,7 @@
   },
   "require": {
     "php": "^8.0",
-    "monolog/monolog": "2.7.0",
+    "monolog/monolog": "2.8.0",
     "nyholm/psr7": "1.5.1",
     "nyholm/psr7-server": "1.0.2",
     "php-di/php-di": "6.4.0",
